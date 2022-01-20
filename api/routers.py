@@ -164,13 +164,13 @@ async def obtain_proxy(request: Request, query: models.ProxyRequest):
     print(found)
     if found:
         redis = request.app.state.redis  # shortcut
-        awailable = []
+        available = []
         for proxy in found:
             if await redis.get(f'{proxy["_id"]}') is None:
                 # proxy is currently not taken
-                awailable.append(f'{proxy["_id"]}')
-        if awailable:
-            hist = [(proxy, len(await redis.keys(f'{proxy}_*'))) for proxy in awailable]
+                available.append(f'{proxy["_id"]}')
+        if available:
+            hist = [(proxy, len(await redis.keys(f'{proxy}_*'))) for proxy in available]
             print(hist)
             if query.rpw is not None:
                 # some additional filtering must be done
