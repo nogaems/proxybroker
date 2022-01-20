@@ -1,7 +1,5 @@
-from fastapi import APIRouter, Request, Body, Query, Depends, HTTPException, status
-from fastapi.responses import JSONResponse, Response
-from fastapi.encoders import jsonable_encoder
-from pydantic import BaseModel, AnyUrl
+from fastapi import APIRouter, Request, Body, HTTPException, status
+from pydantic import AnyUrl
 
 from typing import List, Optional
 from time import time
@@ -41,7 +39,7 @@ async def find_resource(_id: Optional[models.PyObjectId] = Body(None), url: AnyU
         query['url'] = url
     if not query:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
-                            detail=f'Search terms must be either "_id" or "url"')
+                            detail='Search terms must be either "_id" or "url"')
     resource = await mongo.db.resources.find_one(query)
     if resource:
         return resource
@@ -80,7 +78,7 @@ async def update_resource(resource_id: models.PyObjectId, resource: models.Resou
                             detail=f'Resource with ID {resource_id} does not exist')
     if existing['url'] == resource.url:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
-                            detail=f'Specified URL is the same as the former one')
+                            detail='Specified URL is the same as the former one')
     result = await mongo.db.resources.update_one({'_id': resource_id},
                                                  {'$set': {'url': resource.url}})
     if result and result.modified_count:

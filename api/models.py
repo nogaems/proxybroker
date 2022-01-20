@@ -91,7 +91,7 @@ class ProxyRequest(BaseModel):
                 },
                 'rpw': {
                     'type': 'number',
-                    'description': 'Request served per week. Specified value is considered to mean "less than or equal to".'
+                    'description': 'Request served per week. Specified value is considered to mean "less than or equal to".'  # noqa
                 },
                 'ttl': {
                     'type': 'number',
