@@ -1,0 +1,6 @@
+fastapi
+pydantic[dotenv]
+uvicorn[standard]
+uvicorn
+motor
+aioredis
