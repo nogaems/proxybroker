@@ -6,7 +6,7 @@ Features:
  - REST-compliance
  - high performance due to utilizing the most recent frameworks and technologies
  - persistent across restarts of the service
- - self-generated documentation available in `OAS3` format with self-hosted `SwaggerIU` interface
+ - self-generated documentation available in `OAS3` format with self-hosted `SwaggerUI` interface
 
 Note that this is my attempt to solve a job application trial task, so I'm neither considering resolving issues nor adding features.
 
@@ -160,4 +160,12 @@ One thing I would elaborate on is the main feature itself:
 ```
 And last but not least, internal state of the service is stored using `Redis`, so it is both in-memory while working and automatically gets restored from disk across restarts.
 
-
+## Areas of further improvements
+Even though at the moment I don't feel like investing any more time in this project, here's a brief list of directions I'd go to enhance the quality of the project:
+ * architecture-wise
+   * add authentication mechanism along with role-based user system (this way it would be possible to split up CRUD-logic of managing resources from actually using it)
+   * add SSL for reverse-proxy and an automated system to re-issue certs, etc
+   * use an actual load balancer instead of default `nginx` configuration
+ * code-wise
+   * add fully annotated client-side library that would ease writing software utilizing this API
+   * write integration/functional tests
