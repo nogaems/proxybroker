@@ -161,7 +161,6 @@ async def obtain_proxy(request: Request, query: models.ProxyRequest):
             db_query.pop(to_exclude)
     db_query['resources_ids'] = {"$all": db_query["resources_ids"]}
     found = await mongo.db.proxies.find(db_query).to_list(None)
-    print(found)
     if found:
         redis = request.app.state.redis  # shortcut
         available = []
@@ -171,11 +170,9 @@ async def obtain_proxy(request: Request, query: models.ProxyRequest):
                 available.append(f'{proxy["_id"]}')
         if available:
             hist = [(proxy, len(await redis.keys(f'{proxy}_*'))) for proxy in available]
-            print(hist)
             if query.rpw is not None:
                 # some additional filtering must be done
                 hist = list(filter(lambda x: x[1] <= query.rpw, hist))
-            print(hist)
             if hist:
                 # we finally got ourselves good candidates,
                 # now for load balancing's sake we just use
