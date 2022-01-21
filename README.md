@@ -1,12 +1,12 @@
 # proxybroker
-Proxybroker is a microservice that enables you to provide your application with proxies.
+`Proxybroker` is a microservice that enables you to provide your application with proxies.
 
 Features:
  - full CRUD support for every involved entity
  - REST-compliance
  - high performance due to utilizing the most recent frameworks and technologies
  - persistent across restarts of the service
- - self-generated documentation available in OAS3 format with self-hosted SwaggerIU interface
+ - self-generated documentation available in `OAS3` format with self-hosted `SwaggerIU` interface
 
 Note that this is my attempt to solve a job application trial task, so I'm neither considering resolving issues nor adding features.
 
@@ -158,5 +158,6 @@ One thing I would elaborate on is the main feature itself:
 # that is because it's already in use and will be automatically freed after specified 30 seconds run out
 
 ```
+And last but not least, internal state of the service is stored using `Redis`, so it is both in-memory while working and automatically gets restored from disk across restarts.
 
 
