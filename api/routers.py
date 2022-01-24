@@ -117,7 +117,7 @@ proxies = APIRouter()
 # arbitrarily, i.e. introduce `>`, `>=` etc operators.
 
 
-@proxies.post('/proxies', response_model=models.Proxy)
+@proxies.post('/proxies', response_model=models.Proxy, status_code=status.HTTP_201_CREATED)
 async def add_proxy(proxy: models.ProxyIn):
     '''
     Add a proxy
@@ -126,6 +126,7 @@ async def add_proxy(proxy: models.ProxyIn):
     if existing:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT,
                             detail=f'Proxy with specified URL {proxy.url} already exists with ID {existing["_id"]}')
+    await proxy.verify_resources_ids()
     result = await mongo.db.proxies.insert_one(proxy.dict())
     if result and result.inserted_id:
         return await mongo.db.proxies.find_one({'_id': result.inserted_id})
@@ -195,6 +196,7 @@ async def update_proxy(proxy_id: models.PyObjectId, proxy: models.ProxyUpdate):
     if not existing:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f'Proxy with ID {proxy_id} does not exist')
+    await proxy.verify_resources_ids()
     existing.update(proxy.dict(exclude_none=True))
     result = await mongo.db.proxies.update_one({'_id': proxy_id},
                                                {'$set': existing})
