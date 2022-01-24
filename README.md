@@ -160,6 +160,25 @@ One thing I would elaborate on is the main feature itself:
 ```
 And last but not least, internal state of the service is stored using `Redis`, so it is both in-memory while working and automatically gets restored from disk across restarts.
 
+## Benchmark
+```
+(venv) user@desktop ~/proxybroker (main*) $ wrk http://127.0.0.1:8080/proxies --latency -t 128 -c 128
+Running 10s test @ http://127.0.0.1:8080/proxies
+  128 threads and 128 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    77.40ms   50.43ms 416.36ms   81.12%
+    Req/Sec    15.20      7.57    80.00     78.97%
+  Latency Distribution
+     50%   62.50ms
+     75%   88.70ms
+     90%  145.48ms
+     99%  271.65ms
+  17639 requests in 10.10s, 2.61MB read
+Requests/sec:   1746.34
+Transfer/sec:    264.34KB
+
+```
+
 ## Areas of further improvements
 Even though at the moment I don't feel like investing any more time in this project, here's a brief list of directions I'd go to enhance the quality of the project:
  * architecture-wise
