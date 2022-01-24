@@ -32,11 +32,11 @@ class MongoDocument(BaseModel):
 
 
 class Resource(MongoDocument):
-    url: AnyUrl = Field(...)
+    url: AnyUrl
 
 
 class ResourceUrl(BaseModel):
-    url: AnyUrl = Field(...)
+    url: AnyUrl
 
 
 class ResourceQuery(BaseModel):
@@ -45,18 +45,13 @@ class ResourceQuery(BaseModel):
 
 
 class ProxyIn(BaseModel):
-    url: AnyUrl = Field(...)
+    url: AnyUrl
     # TODO: `country` value probably must be an enum
     country: str
-    resources_ids: List[PyObjectId] = Field(...)
-
-    @validator('country')
-    def lower(cls, v):
-        return v.lower()
+    resources_ids: List[PyObjectId]
 
     class Config:
-        arbitrary_types_allowed = True
-        json_encoders = {ObjectId: str}
+        anystr_lower = True
 
 
 class ProxyUpdate(BaseModel):
@@ -64,14 +59,8 @@ class ProxyUpdate(BaseModel):
     country: Optional[str]
     resources_ids: Optional[List[PyObjectId]]
 
-    @validator('country')
-    def lower(cls, v):
-        if v:
-            return v.lower()
-
     class Config:
-        arbitrary_types_allowed = True
-        json_encoders = {ObjectId: str}
+        anystr_lower = True
 
 
 class ProxyRequest(BaseModel):
@@ -81,8 +70,7 @@ class ProxyRequest(BaseModel):
     ttl: int
 
     class Config:
-        arbitrary_types_allowed = True
-        json_encoders = {ObjectId: str}
+        anystr_lower = True
         schema_extra = {
             'properties': {
                 'country': {
